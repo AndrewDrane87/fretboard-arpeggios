@@ -116,9 +116,6 @@ function Home() {
       </header>
       <div className="mx-auto max-w-[1440px] px-5 pb-14 pt-8 md:px-8 md:pt-12">
         <section className="fade-up mb-8 max-w-3xl">
-          <p className="eyebrow mb-3">Map the shape. Hear the harmony.</p>
-          <h1 className="display-font m-0 text-4xl font-bold leading-[1.04] tracking-[-0.055em] text-[#222d37] md:text-6xl">See every note<br /><span className="text-[#d76542]">before you play it.</span></h1>
-          <p className="mt-4 max-w-xl text-sm leading-6 text-[#5d6870] md:text-base">A whole-neck view for building instinct. Set a root, choose the chord, and let the fretboard show you where it lives.</p>
         </section>
 
         <section className="control-card fade-up fade-up-delay mb-7 p-4 md:p-5" aria-label="Fretboard controls">
