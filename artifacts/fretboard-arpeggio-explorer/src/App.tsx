@@ -32,6 +32,8 @@ const TUNINGS: Record<Family, Record<string, Preset>> = {
     openG: { key: 'openG', label: 'Open G', shortLabel: 'D G D G B D', notes: ['D', 'G', 'D', 'G', 'B', 'D'] },
     standard7: { key: 'standard7', label: 'Standard 7-string', shortLabel: 'B E A D G B E', notes: ['B', 'E', 'A', 'D', 'G', 'B', 'E'] },
     dropA7: { key: 'dropA7', label: 'Drop A 7-string', shortLabel: 'A E A D G B E', notes: ['A', 'E', 'A', 'D', 'G', 'B', 'E'] },
+    dStandard7: { key: 'dStandard7', label: 'D Standard 7-string', shortLabel: 'A D G C F A D', notes: ['A', 'D', 'G', 'C', 'F', 'A', 'D'] },
+    dropG7: { key: 'dropG7', label: 'Drop G 7-string', shortLabel: 'G D G C F A D', notes: ['G', 'D', 'G', 'C', 'F', 'A', 'D'] },
   },
   bass: {
     standard: { key: 'standard', label: 'Standard', shortLabel: 'E A D G', notes: ['E', 'A', 'D', 'G'] },
@@ -70,7 +72,7 @@ function Home() {
   const [maxFret, setMaxFret] = useState(17);
 
   const availableTunings = useMemo(() => {
-    if (family === 'guitar') return stringCount === 7 ? [TUNINGS.guitar.standard7, TUNINGS.guitar.dropA7] : [TUNINGS.guitar.standard, TUNINGS.guitar.dropD, TUNINGS.guitar.dStandard, TUNINGS.guitar.dropC, TUNINGS.guitar.openG];
+    if (family === 'guitar') return stringCount === 7 ? [TUNINGS.guitar.standard7, TUNINGS.guitar.dropA7, TUNINGS.guitar.dStandard7, TUNINGS.guitar.dropG7] : [TUNINGS.guitar.standard, TUNINGS.guitar.dropD, TUNINGS.guitar.dStandard, TUNINGS.guitar.dropC, TUNINGS.guitar.openG];
     return stringCount === 5 ? [TUNINGS.bass.fiveString, TUNINGS.bass.dropD5, TUNINGS.bass.dStandard5, TUNINGS.bass.dropC5] : [TUNINGS.bass.standard, TUNINGS.bass.dropD4, TUNINGS.bass.dStandard4, TUNINGS.bass.dropC4];
   }, [family, stringCount]);
   const activeTuningKey = availableTunings.some((preset) => preset.key === tuningKey) ? tuningKey : availableTunings[0].key;
@@ -183,7 +185,7 @@ function Home() {
             <div className="fretboard" style={{ '--frets': maxFret + 1 } as CSSProperties}>
               <div className="fret-grid fret-head">
                 <div className="fret-number justify-start pl-1 text-left">STRING</div>
-                {fretNumbers.map((fret) => <div data-testid={`text-fret-${fret}`} key={fret} className="fret-number">{fret === 0 ? 'OPEN' : fret}</div>)}
+                {fretNumbers.map((fret) => <div data-testid={`text-fret-${fret}`} key={fret} className={`fret-number ${fret === 0 ? 'is-nut' : ''}`}>{fret === 0 ? 'OPEN' : fret}</div>)}
               </div>
               {selectedTuning.notes.slice().reverse().map((openNote, displayStringIndex) => (
                 <div className="fret-grid" key={`${openNote}-${displayStringIndex}`}>
@@ -193,7 +195,7 @@ function Home() {
                     const interval = (NOTES.indexOf(note) - rootIndex + 12) % 12;
                     const active = activeNoteSet.has(NOTES.indexOf(note));
                     const isRoot = active && interval === 0;
-                    return <div className="fret-cell" key={`${displayStringIndex}-${fret}`} data-testid={`cell-${displayStringIndex}-${fret}`}><span title={`${note}, fret ${fret}`} aria-label={`${note}, fret ${fret}${isRoot ? ', root' : ''}`} className={active ? `note-dot ${isRoot ? 'is-root' : 'is-note'}` : 'sr-only'}>{active ? (mode === 'notes' ? note : INTERVAL_LABELS[interval] ?? interval) : ''}</span></div>;
+                    return <div className={`fret-cell ${fret === 0 ? 'is-nut' : ''}`} key={`${displayStringIndex}-${fret}`} data-testid={`cell-${displayStringIndex}-${fret}`}><span title={`${note}, fret ${fret}`} aria-label={`${note}, fret ${fret}${isRoot ? ', root' : ''}`} className={active ? `note-dot ${isRoot ? 'is-root' : 'is-note'}` : 'sr-only'}>{active ? (mode === 'notes' ? note : INTERVAL_LABELS[interval] ?? interval) : ''}</span></div>;
                   })}
                 </div>
               ))}
