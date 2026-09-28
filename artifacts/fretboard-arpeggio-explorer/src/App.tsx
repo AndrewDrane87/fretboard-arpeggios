@@ -35,7 +35,13 @@ const TUNINGS: Record<Family, Record<string, Preset>> = {
   },
   bass: {
     standard: { key: 'standard', label: 'Standard', shortLabel: 'E A D G', notes: ['E', 'A', 'D', 'G'] },
+    dropD4: { key: 'dropD4', label: 'Drop D', shortLabel: 'D A D G', notes: ['D', 'A', 'D', 'G'] },
+    dStandard4: { key: 'dStandard4', label: 'D Standard', shortLabel: 'D G C F', notes: ['D', 'G', 'C', 'F'] },
+    dropC4: { key: 'dropC4', label: 'Drop C', shortLabel: 'C G C F', notes: ['C', 'G', 'C', 'F'] },
     fiveString: { key: 'fiveString', label: '5-string standard', shortLabel: 'B E A D G', notes: ['B', 'E', 'A', 'D', 'G'] },
+    dropD5: { key: 'dropD5', label: '5-string Drop D', shortLabel: 'A D A D G', notes: ['A', 'D', 'A', 'D', 'G'] },
+    dStandard5: { key: 'dStandard5', label: '5-string D Standard', shortLabel: 'A D G C F', notes: ['A', 'D', 'G', 'C', 'F'] },
+    dropC5: { key: 'dropC5', label: '5-string Drop C', shortLabel: 'G C G C F', notes: ['G', 'C', 'G', 'C', 'F'] },
   },
 };
 const INTERVAL_LABELS: Record<number, string> = { 0: 'R', 3: '♭3', 4: '3', 6: '♭5', 7: '5', 8: '♯5', 10: '♭7', 11: '7' };
@@ -65,7 +71,7 @@ function Home() {
 
   const availableTunings = useMemo(() => {
     if (family === 'guitar') return stringCount === 7 ? [TUNINGS.guitar.standard7, TUNINGS.guitar.dropA7] : [TUNINGS.guitar.standard, TUNINGS.guitar.dropD, TUNINGS.guitar.dStandard, TUNINGS.guitar.dropC, TUNINGS.guitar.openG];
-    return stringCount === 5 ? [TUNINGS.bass.fiveString] : [TUNINGS.bass.standard];
+    return stringCount === 5 ? [TUNINGS.bass.fiveString, TUNINGS.bass.dropD5, TUNINGS.bass.dStandard5, TUNINGS.bass.dropC5] : [TUNINGS.bass.standard, TUNINGS.bass.dropD4, TUNINGS.bass.dStandard4, TUNINGS.bass.dropC4];
   }, [family, stringCount]);
   const activeTuningKey = availableTunings.some((preset) => preset.key === tuningKey) ? tuningKey : availableTunings[0].key;
   const selectedTuning = availableTunings.find((preset) => preset.key === activeTuningKey) ?? availableTunings[0];
@@ -170,7 +176,7 @@ function Home() {
 
         <section className="fretboard-wrap fade-up" aria-label={`${root} ${arpeggio} fretboard`}>
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#40505b] bg-[#202b35] px-4 py-3">
-            <div className="flex items-center gap-2 text-xs text-[#b9c5c7]"><CircleDot size={14} className="text-[#f0b23e]" /><span>Low string</span><span className="text-[#687881]">→</span><span>high string</span></div>
+            <div className="flex items-center gap-2 text-xs text-[#b9c5c7]"><CircleDot size={14} className="text-[#f0b23e]" /><span>High string 1</span><span className="text-[#687881]">→</span><span>low string</span></div>
             <div className="flex items-center gap-2 text-xs text-[#b9c5c7]"><Info size={14} /><span>Scroll horizontally to explore the full neck</span></div>
           </div>
           <div className="fretboard-scroll">
@@ -179,15 +185,15 @@ function Home() {
                 <div className="fret-number justify-start pl-1 text-left">STRING</div>
                 {fretNumbers.map((fret) => <div data-testid={`text-fret-${fret}`} key={fret} className="fret-number">{fret === 0 ? 'OPEN' : fret}</div>)}
               </div>
-              {selectedTuning.notes.map((openNote, stringIndex) => (
-                <div className="fret-grid" key={`${openNote}-${stringIndex}`}>
-                  <div className="string-label"><span>{stringIndex + 1}</span> {openNote}</div>
+              {selectedTuning.notes.slice().reverse().map((openNote, displayStringIndex) => (
+                <div className="fret-grid" key={`${openNote}-${displayStringIndex}`}>
+                  <div className="string-label"><span>{displayStringIndex + 1}</span> {openNote}</div>
                   {fretNumbers.map((fret) => {
                     const note = NOTES[(NOTES.indexOf(openNote) + fret) % 12];
                     const interval = (NOTES.indexOf(note) - rootIndex + 12) % 12;
                     const active = activeNoteSet.has(NOTES.indexOf(note));
                     const isRoot = active && interval === 0;
-                    return <div className="fret-cell" key={`${stringIndex}-${fret}`} data-testid={`cell-${stringIndex}-${fret}`}><span title={`${note}, fret ${fret}`} aria-label={`${note}, fret ${fret}${isRoot ? ', root' : ''}`} className={active ? `note-dot ${isRoot ? 'is-root' : 'is-note'}` : 'sr-only'}>{active ? (mode === 'notes' ? note : INTERVAL_LABELS[interval] ?? interval) : ''}</span></div>;
+                    return <div className="fret-cell" key={`${displayStringIndex}-${fret}`} data-testid={`cell-${displayStringIndex}-${fret}`}><span title={`${note}, fret ${fret}`} aria-label={`${note}, fret ${fret}${isRoot ? ', root' : ''}`} className={active ? `note-dot ${isRoot ? 'is-root' : 'is-note'}` : 'sr-only'}>{active ? (mode === 'notes' ? note : INTERVAL_LABELS[interval] ?? interval) : ''}</span></div>;
                   })}
                 </div>
               ))}
