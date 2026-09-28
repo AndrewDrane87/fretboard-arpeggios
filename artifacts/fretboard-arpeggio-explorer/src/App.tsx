@@ -27,8 +27,11 @@ const TUNINGS: Record<Family, Record<string, Preset>> = {
   guitar: {
     standard: { key: 'standard', label: 'Standard', shortLabel: 'E A D G B E', notes: ['E', 'A', 'D', 'G', 'B', 'E'] },
     dropD: { key: 'dropD', label: 'Drop D', shortLabel: 'D A D G B E', notes: ['D', 'A', 'D', 'G', 'B', 'E'] },
+    dStandard: { key: 'dStandard', label: 'D Standard', shortLabel: 'D G C F A D', notes: ['D', 'G', 'C', 'F', 'A', 'D'] },
+    dropC: { key: 'dropC', label: 'Drop C', shortLabel: 'C G C F A D', notes: ['C', 'G', 'C', 'F', 'A', 'D'] },
     openG: { key: 'openG', label: 'Open G', shortLabel: 'D G D G B D', notes: ['D', 'G', 'D', 'G', 'B', 'D'] },
     standard7: { key: 'standard7', label: 'Standard 7-string', shortLabel: 'B E A D G B E', notes: ['B', 'E', 'A', 'D', 'G', 'B', 'E'] },
+    dropA7: { key: 'dropA7', label: 'Drop A 7-string', shortLabel: 'A E A D G B E', notes: ['A', 'E', 'A', 'D', 'G', 'B', 'E'] },
   },
   bass: {
     standard: { key: 'standard', label: 'Standard', shortLabel: 'E A D G', notes: ['E', 'A', 'D', 'G'] },
@@ -61,7 +64,7 @@ function Home() {
   const [maxFret, setMaxFret] = useState(17);
 
   const availableTunings = useMemo(() => {
-    if (family === 'guitar') return stringCount === 7 ? [TUNINGS.guitar.standard7] : [TUNINGS.guitar.standard, TUNINGS.guitar.dropD, TUNINGS.guitar.openG];
+    if (family === 'guitar') return stringCount === 7 ? [TUNINGS.guitar.standard7, TUNINGS.guitar.dropA7] : [TUNINGS.guitar.standard, TUNINGS.guitar.dropD, TUNINGS.guitar.dStandard, TUNINGS.guitar.dropC, TUNINGS.guitar.openG];
     return stringCount === 5 ? [TUNINGS.bass.fiveString] : [TUNINGS.bass.standard];
   }, [family, stringCount]);
   const activeTuningKey = availableTunings.some((preset) => preset.key === tuningKey) ? tuningKey : availableTunings[0].key;
