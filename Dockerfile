@@ -1,8 +1,9 @@
-FROM node:24-alpine AS build
+FROM node:24-bookworm-slim AS build
 
 WORKDIR /app
 
-RUN corepack enable
+ARG PNPM_VERSION=10.26.1
+RUN npm install --global pnpm@${PNPM_VERSION}
 
 COPY . .
 
