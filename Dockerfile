@@ -7,7 +7,7 @@ RUN npm install --global pnpm@${PNPM_VERSION}
 
 COPY . .
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm --version && pnpm install --frozen-lockfile --reporter=append-only
 
 ENV NODE_ENV=production
 ENV PORT=4173
