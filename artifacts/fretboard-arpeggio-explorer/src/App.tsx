@@ -69,7 +69,7 @@ function Home() {
   const [root, setRoot] = useState('C');
   const [arpeggio, setArpeggio] = useState<ArpeggioName>('Major 7');
   const [mode, setMode] = useState<'notes' | 'intervals'>('notes');
-  const [maxFret, setMaxFret] = useState(17);
+  const [maxFret, setMaxFret] = useState(12);
 
   const availableTunings = useMemo(() => {
     if (family === 'guitar') return stringCount === 7 ? [TUNINGS.guitar.standard7, TUNINGS.guitar.dropA7, TUNINGS.guitar.dStandard7, TUNINGS.guitar.dropG7] : [TUNINGS.guitar.standard, TUNINGS.guitar.dropD, TUNINGS.guitar.dStandard, TUNINGS.guitar.dropC, TUNINGS.guitar.openG];
@@ -86,7 +86,7 @@ function Home() {
   }, 0), [activeNoteSet, fretNumbers, selectedTuning]);
 
   const reset = () => {
-    setFamily('guitar'); setStringCount(6); setTuningKey('standard'); setRoot('C'); setArpeggio('Major 7'); setMode('notes'); setMaxFret(17);
+    setFamily('guitar'); setStringCount(6); setTuningKey('standard'); setRoot('C'); setArpeggio('Major 7'); setMode('notes'); setMaxFret(12);
   };
   const setInstrument = (nextFamily: Family) => {
     setFamily(nextFamily);
@@ -124,7 +124,7 @@ function Home() {
         <section className="control-card fade-up fade-up-delay mb-7 p-4 md:p-5" aria-label="Fretboard controls">
           <div className="mb-5 flex items-center justify-between gap-3 border-b border-[#e6dfd0] pb-4">
             <div className="flex items-center gap-2"><SlidersHorizontal size={16} className="text-[#d76542]" /><p className="m-0 text-sm font-extrabold text-[#303c45]">Build your position</p></div>
-            <p data-testid="text-selection-summary" className="eyebrow m-0 text-right">Showing {activePositions} tones across {maxFret} frets</p>
+            <p data-testid="text-selection-summary" className="eyebrow m-0 text-right">Showing {activePositions} tones across frets 0–{maxFret}</p>
           </div>
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-[1.05fr_.85fr_1fr_1fr]">
             <div>
@@ -163,7 +163,7 @@ function Home() {
               <p className="eyebrow mb-2">Current selection</p>
               <h2 data-testid="text-current-selection" className="display-font m-0 text-2xl font-bold tracking-[-0.04em] text-[#26333d] md:text-3xl">{root} {arpeggio}</h2>
               <div className="mt-2 flex flex-wrap items-center gap-3">
-                <span data-testid="text-formula" className="font-mono text-xs text-[#6b7478]">Formula: {formula.map((interval) => interval === 0 ? '1' : interval).join(' — ')}</span>
+                <span data-testid="text-formula" className="font-mono text-xs text-[#6b7478]">Formula: {formula.map((interval) => interval === 0 ? 'R' : INTERVAL_LABELS[interval] ?? interval).join(' — ')}</span>
                 <span className="note-legend"><i className="legend-dot root" /> root</span><span className="note-legend"><i className="legend-dot" /> chord tone</span>
               </div>
             </div>
@@ -208,7 +208,7 @@ function Home() {
 
         <footer className="mt-7 flex flex-wrap items-center justify-between gap-3 text-xs text-[#7a817f]">
           <p className="m-0">Chromatic positions calculated locally from open-string pitch.</p>
-          <p className="m-0 font-mono">12 notes · {formula.length} chord tones · {maxFret} frets</p>
+          <p className="m-0 font-mono">12 notes · {formula.length} chord tones · frets 0–{maxFret}</p>
         </footer>
       </div>
     </main>
