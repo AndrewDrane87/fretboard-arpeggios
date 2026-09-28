@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Fretboard Arpeggio Explorer"
+description = "A front-end interactive fretboard explorer for guitar and bass players to visualize arpeggios across different tunings and string counts, with root-note emphasis and note or interval display modes."
+version = "1.0.0"
+id = "artifacts/fretboard-arpeggio-explorer"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25903
+
+[services.development]
+run = "pnpm --filter @workspace/fretboard-arpeggio-explorer run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fretboard-arpeggio-explorer", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/fretboard-arpeggio-explorer/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25903"
+BASE_PATH = "/"

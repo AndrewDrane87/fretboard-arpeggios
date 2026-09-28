@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+  --radius-lg: var(--radius);
+}
+:root {
+  --background: 38 37% 93%; --foreground: 222 36% 17%; --border: 37 20% 82%; --input: 37 20% 78%;
+  --ring: 18 82% 54%; --card: 40 33% 97%; --card-foreground: 222 36% 17%; --card-border: 37 23% 84%;
+  --primary: 18 82% 54%; --primary-foreground: 40 33% 97%; --secondary: 197 28% 87%; --secondary-foreground: 210 39% 23%;
+  --muted: 36 25% 88%; --muted-foreground: 215 18% 45%; --accent: 47 88% 62%; --accent-foreground: 222 36% 17%;
+  --destructive: 2 68% 49%; --destructive-foreground: 40 33% 97%;
+  --sidebar: 222 36% 17%; --sidebar-foreground: 39 35% 92%; --sidebar-border: 220 24% 27%;
+  --sidebar-primary: 18 82% 54%; --sidebar-primary-foreground: 40 33% 97%; --sidebar-accent: 220 27% 24%; --sidebar-accent-foreground: 39 35% 92%; --sidebar-ring: 18 82% 54%;
+  --app-font-sans: 'Manrope', sans-serif; --app-font-mono: 'DM Mono', monospace; --radius: 0.75rem;
+}
+* { box-sizing: border-box; }
+html { background: hsl(var(--background)); }
+body { margin: 0; background: hsl(var(--background)); color: hsl(var(--foreground)); font-family: var(--app-font-sans); -webkit-font-smoothing: antialiased; }
+button, input, select { font: inherit; } button { cursor: pointer; }
+.app-shell { min-height: 100dvh; background: radial-gradient(circle at 88% 4%, rgba(235,183,67,.18), transparent 25rem), radial-gradient(circle at 5% 72%, rgba(69,132,149,.08), transparent 30rem), hsl(var(--background)); }
+.topbar { border-bottom: 1px solid hsl(var(--border)); background: rgba(247,244,235,.84); backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 20; }
+.brand-mark { width: 2.15rem; height: 2.15rem; border-radius: .55rem; display: grid; place-items: center; background: hsl(var(--foreground)); color: hsl(var(--accent)); box-shadow: 3px 3px 0 hsl(var(--primary)); }
+.eyebrow, .control-label { font-family: var(--app-font-mono); text-transform: uppercase; letter-spacing: .14em; font-size: .67rem; color: hsl(var(--muted-foreground)); }
+.display-font { font-family: 'Space Grotesk', sans-serif; }
+.control-label { display: block; margin-bottom: .5rem; letter-spacing: .1em; }
+.control-select { appearance: none; min-height: 2.5rem; border: 1px solid hsl(var(--border)); border-radius: .58rem; background: hsl(var(--card)); padding: 0 2.1rem 0 .78rem; color: hsl(var(--foreground)); font-size: .8rem; font-weight: 700; outline: none; width: 100%; transition: border-color 160ms ease, box-shadow 160ms ease; }
+.control-select:hover { border-color: hsl(var(--primary)); } .control-select:focus-visible { border-color: hsl(var(--primary)); box-shadow: 0 0 0 3px hsla(var(--primary)/.16); }
+.select-wrap { position: relative; } .select-wrap svg { position: absolute; pointer-events: none; right: .68rem; top: 50%; transform: translateY(-50%); color: hsl(var(--muted-foreground)); }
+.segmented { display: flex; padding: .2rem; background: hsl(var(--muted)); border-radius: .65rem; gap: .2rem; }
+.segmented button { min-height: 2.15rem; padding: 0 .72rem; border: 0; border-radius: .48rem; background: transparent; color: hsl(var(--muted-foreground)); font-size: .76rem; font-weight: 800; transition: background 160ms ease,color 160ms ease,transform 160ms ease; }
+.segmented button:hover { color: hsl(var(--foreground)); transform: translateY(-1px); } .segmented button[data-active=true] { background: hsl(var(--card)); color: hsl(var(--foreground)); box-shadow: 0 2px 5px rgba(35,39,44,.1); }
+.control-card { border: 1px solid hsl(var(--card-border)); background: rgba(251,249,243,.88); border-radius: 1rem; box-shadow: 0 10px 30px rgba(52,52,45,.06); }
+.range-input { accent-color: hsl(var(--primary)); width: 100%; height: .35rem; }
+.fretboard-wrap { border-radius: 1.2rem; border: 1px solid #3d4851; background: #202b35; box-shadow: 0 18px 35px rgba(32,43,53,.2),0 2px 0 rgba(255,255,255,.08) inset; overflow: hidden; }
+.fretboard-scroll { overflow-x: auto; overscroll-behavior-x: contain; } .fretboard-scroll::-webkit-scrollbar { height: .55rem; } .fretboard-scroll::-webkit-scrollbar-track { background: #172129; } .fretboard-scroll::-webkit-scrollbar-thumb { background: #71808a; border-radius: 1rem; }
+.fretboard { min-width: 850px; padding: 1rem 1rem 1.15rem; background: #26333d; }
+.fret-grid { display: grid; grid-template-columns: 5rem repeat(var(--frets),minmax(3.7rem,1fr)); min-width: 825px; }
+.fret-head { min-height: 2rem; } .fret-number { display: grid; place-items: center; color: #aab7bd; font-family: var(--app-font-mono); font-size: .63rem; border-right: 1px solid rgba(212,197,160,.25); } .fret-number:first-of-type { border-left: 1px solid rgba(212,197,160,.25); }
+.string-label { display: flex; align-items: center; gap: .38rem; color: #d7dfdf; font-family: var(--app-font-mono); font-size: .75rem; letter-spacing: .03em; padding-left: .15rem; } .string-label span { color: #e5b34c; font-weight: 600; }
+.fret-cell { height: 3.42rem; display: grid; place-items: center; position: relative; border-right: 1px solid rgba(198,183,149,.23); border-top: 1px solid rgba(224,213,186,.35); } .fret-cell::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: .21rem; transform: translateY(-50%); background: #87929a; opacity: .75; z-index: 0; } .fret-cell:first-of-type { border-left: 1px solid rgba(198,183,149,.23); }
+.note-dot { position: relative; z-index: 1; width: 2.15rem; height: 2.15rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--app-font-mono); font-size: .68rem; font-weight: 500; border: 1px solid transparent; transition: transform 160ms ease,box-shadow 160ms ease; } .note-dot.is-note { color: #1c2a30; background: #d5e3dc; border-color: #f0f5ec; } .note-dot.is-root { color: #17232b; background: #f0b23e; border-color: #ffe4a5; box-shadow: 0 0 0 3px rgba(240,178,62,.22),0 3px 7px rgba(8,14,18,.22); font-weight: 800; } .note-dot:hover { transform: scale(1.14); box-shadow: 0 0 0 4px rgba(255,255,255,.14); }
+.marker-row { min-height: 1.25rem; } .marker { width: .32rem; height: .32rem; border-radius: 50%; background: #c7d0d0; opacity: .65; margin: 0 auto; } .marker.double { box-shadow: 0 .52rem 0 #c7d0d0; }
+.empty-state { min-height: 18rem; display: grid; place-items: center; text-align: center; padding: 2rem; color: #d7dfdf; } .accent-rule { height: 1px; background: linear-gradient(90deg,hsl(var(--primary)),transparent); } .note-legend { display: inline-flex; align-items: center; gap: .45rem; color: hsl(var(--muted-foreground)); font-size: .72rem; } .legend-dot { width: .78rem; height: .78rem; border-radius: 50%; background: #d5e3dc; } .legend-dot.root { background: #f0b23e; border: 1px solid #e5a730; }
+.fade-up { animation: fade-up 520ms ease both; } .fade-up-delay { animation-delay: 100ms; } @keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 767px) { .topbar { position: relative; } .fretboard { padding: .75rem .65rem .9rem; } .fret-grid { grid-template-columns: 4.2rem repeat(var(--frets),3.7rem); } .note-dot { width: 2rem; height: 2rem; font-size: .64rem; } .fret-cell { height: 3.2rem; } }
