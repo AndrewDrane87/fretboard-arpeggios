@@ -255,54 +255,14 @@ function Home() {
                 <div className="mt-1 flex justify-between font-mono text-[10px] text-[#899198]"><span>5</span><span>12</span><span>17</span><span>24</span></div>
               </div>
             </div>
-          </section>
-
-          <section className="planner-card fade-up mb-8" aria-label="Song chord planner">
-            <div className="planner-header">
-              <div className="flex items-start gap-3">
-                <div className="planner-icon"><ListMusic size={18} /></div>
-                <div>
-                  <p className="eyebrow m-0">Song chord planner</p>
-                  <h2 className="display-font m-0 mt-1 text-xl font-bold tracking-[-0.04em] text-[#26333d]">Turn the fretboard into a playable plan</h2>
-                  <p data-testid="text-song-plan-count" className="m-0 mt-1 text-xs text-[#69757a]">{songChords.length} chord{songChords.length === 1 ? '' : 's'} saved for this session</p>
-                </div>
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[#e6dfd0] pt-4">
+              <div>
+                <span className="control-label m-0">Selected chord</span>
+                <p data-testid="text-build-position-chord" className="m-0 mt-1 font-mono text-xs font-bold text-[#34434c]">{root} {arpeggio} <span className="font-normal text-[#7a817f]">· {formulaLabel(formula)}</span></p>
               </div>
-              <div className="flex flex-wrap gap-2">
-                <button data-testid="button-print-song-plan" type="button" disabled={!songChords.length} onClick={() => window.print()} className="planner-secondary-button"><Printer size={14} /> Print charts</button>
-                {songChords.length > 0 && <button data-testid="button-clear-song-plan" type="button" onClick={clearPlan} className="planner-quiet-button"><Trash2 size={14} /> Clear all</button>}
-              </div>
-            </div>
-            <div className="planner-body">
-              <div className="plan-column">
-                <div className="planner-subhead"><span>Selected chords</span><span data-testid="text-selected-chord-count" className="planner-count">{songChords.length}</span></div>
-                {songChords.length ? (
-                  <div className="song-chord-list">
-                    {songChords.map((chord, index) => (
-                      <div className="song-chord-row" key={chord.id} data-testid={`row-song-chord-${chord.id}`}>
-                        <span className="song-chord-index">{String(index + 1).padStart(2, '0')}</span>
-                        <div className="min-w-0 flex-1">
-                          <p data-testid={`text-song-chord-name-${chord.id}`} className="m-0 truncate text-sm font-extrabold text-[#2d3b43]">{chord.root} {chord.arpeggio}</p>
-                          <p data-testid={`text-song-chord-details-${chord.id}`} className="m-0 mt-1 truncate font-mono text-[10px] text-[#778287]">{formulaLabel(chord.formula)} · {chord.tuning.shortLabel}</p>
-                        </div>
-                        <button data-testid={`button-remove-song-chord-${chord.id}`} type="button" aria-label={`Remove ${chord.root} ${chord.arpeggio}`} onClick={() => removeChord(chord.id)} className="icon-button"><X size={15} /></button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="planner-empty" data-testid="status-song-plan-empty"><Plus size={16} /><span>Add a root and arpeggio below to sketch your progression.</span></div>
-                )}
-              </div>
-              <div className="key-column">
-                <div className="planner-subhead"><span><KeyRound size={14} /> Potential keys</span><span data-testid="text-potential-key-count" className="planner-count">{potentialKeys.length}</span></div>
-                {potentialKeys.length ? (
-                  <div className="key-list">
-                    {potentialKeys.map((key) => <button data-testid={`button-key-${key.id}`} type="button" key={key.id} data-active={selectedKeyId === key.id} aria-pressed={selectedKeyId === key.id} onClick={() => setSelectedKeyId(key.id)} className="key-chip"><span>{key.label}</span><small>{key.notes.join(' · ')}</small></button>)}
-                  </div>
-                ) : (
-                  <div className="planner-empty key-empty" data-testid="status-key-signatures-empty"><KeyRound size={16} /><span>Compatible major and natural-minor keys appear once chords are added.</span></div>
-                )}
-                {selectedKey && <button data-testid="button-clear-key-filter" type="button" onClick={() => setSelectedKeyId('')} className="clear-key-button">Clear {selectedKey.label} filter</button>}
-              </div>
+              <button data-testid="button-add-current-chord" type="button" disabled={currentChordAdded} onClick={addCurrentChord} className="add-chord-button">
+                {currentChordAdded ? <Check size={15} /> : <Plus size={15} />}<span data-testid="text-add-chord-state">{currentChordAdded ? 'Added to plan' : 'Add to song plan'}</span>
+              </button>
             </div>
           </section>
 
@@ -316,14 +276,9 @@ function Home() {
                   <span className="note-legend"><i className="legend-dot root" /> root</span><span className="note-legend"><i className="legend-dot" /> chord tone</span>
                 </div>
               </div>
-              <div className="flex flex-wrap items-end justify-end gap-2">
-                <div className="rounded-lg border border-[#e0d7c5] bg-[#f8f5ed] px-3 py-2 text-right">
-                  <p className="eyebrow m-0">Instrument / tuning</p>
-                  <p data-testid="text-current-tuning" className="m-0 mt-1 font-mono text-xs font-medium text-[#34434c]">{family} · {selectedTuning.label}</p>
-                </div>
-                <button data-testid="button-add-current-chord" type="button" disabled={currentChordAdded} onClick={addCurrentChord} className="add-chord-button">
-                  {currentChordAdded ? <Check size={15} /> : <Plus size={15} />}<span data-testid="text-add-chord-state">{currentChordAdded ? 'Added to plan' : 'Add to song plan'}</span>
-                </button>
+              <div className="rounded-lg border border-[#e0d7c5] bg-[#f8f5ed] px-3 py-2 text-right">
+                <p className="eyebrow m-0">Instrument / tuning</p>
+                <p data-testid="text-current-tuning" className="m-0 mt-1 font-mono text-xs font-medium text-[#34434c]">{family} · {selectedTuning.label}</p>
               </div>
             </div>
             <div className="accent-rule mb-4" />
@@ -364,6 +319,55 @@ function Home() {
             <p className="m-0">Chromatic positions calculated locally from open-string pitch.</p>
             <p data-testid="text-fretboard-stats" className="m-0 font-mono">12 notes · {formula.length} chord tones · frets 0–{maxFret}</p>
           </footer>
+
+          <section className="planner-card fade-up mt-8" aria-label="Song chord planner">
+            <div className="planner-header">
+              <div className="flex items-start gap-3">
+                <div className="planner-icon"><ListMusic size={18} /></div>
+                <div>
+                  <p className="eyebrow m-0">Song chord planner</p>
+                  <h2 className="display-font m-0 mt-1 text-xl font-bold tracking-[-0.04em] text-[#26333d]">Turn the fretboard into a playable plan</h2>
+                  <p data-testid="text-song-plan-count" className="m-0 mt-1 text-xs text-[#69757a]">{songChords.length} chord{songChords.length === 1 ? '' : 's'} saved for this session</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button data-testid="button-print-song-plan" type="button" disabled={!songChords.length} onClick={() => window.print()} className="planner-secondary-button"><Printer size={14} /> Print charts</button>
+                {songChords.length > 0 && <button data-testid="button-clear-song-plan" type="button" onClick={clearPlan} className="planner-quiet-button"><Trash2 size={14} /> Clear all</button>}
+              </div>
+            </div>
+            <div className="planner-body">
+              <div className="plan-column">
+                <div className="planner-subhead"><span>Selected chords</span><span data-testid="text-selected-chord-count" className="planner-count">{songChords.length}</span></div>
+                {songChords.length ? (
+                  <div className="song-chord-list">
+                    {songChords.map((chord, index) => (
+                      <div className="song-chord-row" key={chord.id} data-testid={`row-song-chord-${chord.id}`}>
+                        <span className="song-chord-index">{String(index + 1).padStart(2, '0')}</span>
+                        <div className="min-w-0 flex-1">
+                          <p data-testid={`text-song-chord-name-${chord.id}`} className="m-0 truncate text-sm font-extrabold text-[#2d3b43]">{chord.root} {chord.arpeggio}</p>
+                          <p data-testid={`text-song-chord-details-${chord.id}`} className="m-0 mt-1 truncate font-mono text-[10px] text-[#778287]">{formulaLabel(chord.formula)} · {chord.tuning.shortLabel}</p>
+                        </div>
+                        <button data-testid={`button-remove-song-chord-${chord.id}`} type="button" aria-label={`Remove ${chord.root} ${chord.arpeggio}`} onClick={() => removeChord(chord.id)} className="icon-button"><X size={15} /></button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="planner-empty" data-testid="status-song-plan-empty"><Plus size={16} /><span>Use the controls above to add chords to your progression.</span></div>
+                )}
+              </div>
+              <div className="key-column">
+                <div className="planner-subhead"><span><KeyRound size={14} /> Potential keys</span><span data-testid="text-potential-key-count" className="planner-count">{potentialKeys.length}</span></div>
+                {potentialKeys.length ? (
+                  <div className="key-list">
+                    {potentialKeys.map((key) => <button data-testid={`button-key-${key.id}`} type="button" key={key.id} data-active={selectedKeyId === key.id} aria-pressed={selectedKeyId === key.id} onClick={() => setSelectedKeyId(key.id)} className="key-chip"><span>{key.label}</span><small>{key.notes.join(' · ')}</small></button>)}
+                  </div>
+                ) : (
+                  <div className="planner-empty key-empty" data-testid="status-key-signatures-empty"><KeyRound size={16} /><span>Compatible major and natural-minor keys appear once chords are added.</span></div>
+                )}
+                {selectedKey && <button data-testid="button-clear-key-filter" type="button" onClick={() => setSelectedKeyId('')} className="clear-key-button">Clear {selectedKey.label} filter</button>}
+              </div>
+            </div>
+          </section>
         </div>
       </main>
       <PrintSurface chords={songChords} />
